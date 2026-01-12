@@ -1,65 +1,180 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useEffect, useState } from 'react';
+import {
+  getActiveHabits,
+  getCheckinsForDate,
+  getTodayString,
+  toggleCheckin,
+  updateCheckinNote,
+} from '@/lib/storage';
+import { Habit, Checkin } from '@/types';
+
+export default function TodayPage() {
+  const [habits, setHabits] = useState<Habit[]>([]);
+  const [checkins, setCheckins] = useState<Checkin[]>([]);
+  const [today] = useState(getTodayString());
+  const [noteInputs, setNoteInputs] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = () => {
+    const activeHabits = getActiveHabits();
+    const todayCheckins = getCheckinsForDate(getTodayString());
+    setHabits(activeHabits);
+    setCheckins(todayCheckins);
+
+    // Initialize note inputs
+    const notes: Record<string, string> = {};
+    todayCheckins.forEach((c) => {
+      if (c.note) notes[c.habitId] = c.note;
+    });
+    setNoteInputs(notes);
+  };
+
+  const handleToggle = (habitId: string) => {
+    toggleCheckin(habitId, today);
+    loadData();
+  };
+
+  const handleNoteChange = (habitId: string, note: string) => {
+    setNoteInputs({ ...noteInputs, [habitId]: note });
+  };
+
+  const handleNoteSave = (habitId: string) => {
+    const note = noteInputs[habitId] || '';
+    if (note.trim()) {
+      updateCheckinNote(habitId, today, note);
+      loadData();
+    }
+  };
+
+  const isCompleted = (habitId: string) => {
+    const checkin = checkins.find((c) => c.habitId === habitId);
+    return checkin?.completed || false;
+  };
+
+  const completedCount = checkins.filter((c) => c.completed).length;
+  const totalCount = habits.length;
+  const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Today</h1>
+        <p className="text-gray-600 mt-1">{new Date().toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}</p>
+      </div>
+
+      {/* Progress bar */}
+      <div className="card p-6">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-medium text-gray-700">Daily Progress</span>
+          <span className="text-sm font-semibold text-gray-900">
+            {completedCount} / {totalCount}
+          </span>
+        </div>
+        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-green-500 transition-all duration-300"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Habits list */}
+      <div className="space-y-3">
+        {habits.length === 0 ? (
+          <div className="card p-8 text-center">
+            <p className="text-gray-500">No active habits. Add some in the Habits tab!</p>
+          </div>
+        ) : (
+          habits.map((habit) => {
+            const completed = isCompleted(habit.id);
+            return (
+              <div key={habit.id} className="card p-4">
+                <div className="flex items-start gap-4">
+                  {/* Checkbox button */}
+                  <button
+                    onClick={() => handleToggle(habit.id)}
+                    className={`flex-shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${
+                      completed
+                        ? 'bg-green-500 border-green-500'
+                        : 'border-gray-300 hover:border-green-400'
+                    }`}
+                  >
+                    {completed && (
+                      <svg
+                        className="w-5 h-5 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={3}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                    )}
+                  </button>
+
+                  {/* Habit info */}
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      {habit.icon && <span className="text-xl">{habit.icon}</span>}
+                      <h3
+                        className={`font-semibold ${
+                          completed ? 'text-gray-500 line-through' : 'text-gray-900'
+                        }`}
+                      >
+                        {habit.name}
+                      </h3>
+                    </div>
+                    {habit.description && (
+                      <p className="text-sm text-gray-600 mb-2">{habit.description}</p>
+                    )}
+
+                    {/* Note input */}
+                    <div className="mt-2">
+                      <input
+                        type="text"
+                        placeholder="Add a note (optional)"
+                        value={noteInputs[habit.id] || ''}
+                        onChange={(e) => handleNoteChange(habit.id, e.target.value)}
+                        onBlur={() => handleNoteSave(habit.id)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            handleNoteSave(habit.id);
+                            e.currentTarget.blur();
+                          }
+                        }}
+                        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Encouragement message */}
+      {completedCount === totalCount && totalCount > 0 && (
+        <div className="card p-6 bg-green-50 border-green-200">
+          <p className="text-center text-green-800 font-medium">
+            🎉 Amazing! You completed all your habits today!
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      )}
     </div>
   );
 }
