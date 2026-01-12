@@ -83,14 +83,14 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Settings</h1>
-        <p className="text-gray-600 mt-1">Manage your preferences and data</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Settings</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">Manage your preferences and data</p>
       </div>
 
       {/* On-Track Threshold */}
       <div className="card p-6">
-        <h2 className="text-lg font-semibold mb-4">On-Track Threshold</h2>
-        <p className="text-sm text-gray-600 mb-4">
+        <h2 className="text-lg font-semibold mb-4 dark:text-gray-100">On-Track Threshold</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
           Number of habits you need to complete to count a day as &quot;on track&quot;
         </p>
         <div className="flex items-center gap-4">
@@ -103,26 +103,26 @@ export default function SettingsPage() {
             className="flex-1"
           />
           <div className="w-12 text-center">
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               {settings.onTrackThreshold}
             </span>
           </div>
         </div>
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
           Current: Complete at least {settings.onTrackThreshold} habits per day
         </p>
       </div>
 
       {/* Data Management */}
       <div className="card p-6">
-        <h2 className="text-lg font-semibold mb-4">Data Management</h2>
+        <h2 className="text-lg font-semibold mb-4 dark:text-gray-100">Data Management</h2>
         <div className="space-y-4">
           {/* Export */}
           <div>
             <button onClick={handleExport} className="btn btn-primary w-full">
               📥 Export Data (JSON)
             </button>
-            <p className="text-xs text-gray-600 mt-2">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
               Download all your habits and check-ins as a JSON file
             </p>
           </div>
@@ -142,13 +142,13 @@ export default function SettingsPage() {
             >
               📤 Import Data (JSON)
             </button>
-            <p className="text-xs text-gray-600 mt-2">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
               Restore data from a previously exported JSON file
             </p>
             {importStatus && (
               <p
                 className={`text-sm mt-2 ${
-                  importStatus.startsWith('✓') ? 'text-green-600' : 'text-red-600'
+                  importStatus.startsWith('✓') ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
                 }`}
               >
                 {importStatus}
@@ -157,11 +157,11 @@ export default function SettingsPage() {
           </div>
 
           {/* Reset */}
-          <div className="pt-4 border-t border-gray-200">
+          <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
             <button onClick={handleReset} className="btn btn-danger w-full">
               🗑️ Reset All Data
             </button>
-            <p className="text-xs text-gray-600 mt-2">
+            <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
               Delete all habits and check-ins. This action cannot be undone.
             </p>
           </div>
@@ -169,18 +169,18 @@ export default function SettingsPage() {
       </div>
 
       {/* Privacy Notice */}
-      <div className="card p-6 bg-green-50 border-green-200">
-        <h2 className="text-lg font-semibold mb-2">🔒 Privacy First</h2>
-        <p className="text-sm text-gray-700">
+      <div className="card p-6 bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800">
+        <h2 className="text-lg font-semibold mb-2 dark:text-gray-100">🔒 Privacy First</h2>
+        <p className="text-sm text-gray-700 dark:text-gray-300">
           All your data is stored locally in your browser. Nothing is sent to any server.
           Your habits and progress are completely private and under your control.
         </p>
       </div>
 
       {/* App Info */}
-      <div className="card p-6 bg-gray-50">
-        <h2 className="text-lg font-semibold mb-2">About</h2>
-        <div className="text-sm text-gray-700 space-y-1">
+      <div className="card p-6 bg-gray-50 dark:bg-gray-800/50">
+        <h2 className="text-lg font-semibold mb-2 dark:text-gray-100">About</h2>
+        <div className="text-sm text-gray-700 dark:text-gray-300 space-y-1">
           <p>
             <strong>Version:</strong> {settings.version}
           </p>

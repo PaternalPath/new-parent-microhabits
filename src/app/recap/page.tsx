@@ -74,33 +74,33 @@ Keep building those healthy habits! 💪
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Weekly Recap</h1>
-        <p className="text-gray-600 mt-1">Your last 7 days at a glance</p>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Weekly Recap</h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1">Your last 7 days at a glance</p>
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-gray-900">{overallRate}%</div>
-          <div className="text-xs text-gray-600 mt-1">Completion Rate</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{overallRate}%</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">Completion Rate</div>
         </div>
         <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-gray-900">{onTrackDays}/{totalDays}</div>
-          <div className="text-xs text-gray-600 mt-1">On-Track Days</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{onTrackDays}/{totalDays}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">On-Track Days</div>
         </div>
         <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-gray-900">{streakStats.currentStreak}</div>
-          <div className="text-xs text-gray-600 mt-1">Current Streak</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{streakStats.currentStreak}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">Current Streak</div>
         </div>
         <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-gray-900">{totalCompleted}</div>
-          <div className="text-xs text-gray-600 mt-1">Total Completed</div>
+          <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{totalCompleted}</div>
+          <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">Total Completed</div>
         </div>
       </div>
 
       {/* Visual Calendar */}
       <div className="card p-6">
-        <h2 className="text-lg font-semibold mb-4">Weekly Calendar</h2>
+        <h2 className="text-lg font-semibold mb-4 dark:text-gray-100">Weekly Calendar</h2>
         <div className="grid grid-cols-7 gap-2">
           {last7Days.map((day) => {
             const date = new Date(day.date);
@@ -110,18 +110,18 @@ Keep building those healthy habits! 💪
 
             return (
               <div key={day.date} className="text-center">
-                <div className="text-xs text-gray-600 mb-1">{dayName}</div>
+                <div className="text-xs text-gray-600 dark:text-gray-400 mb-1">{dayName}</div>
                 <div
                   className={`aspect-square rounded-lg flex flex-col items-center justify-center ${
                     day.onTrack
-                      ? 'bg-green-100 border-2 border-green-500'
+                      ? 'bg-green-100 border-2 border-green-500 dark:bg-green-900/30 dark:border-green-600'
                       : completionRate > 0
-                      ? 'bg-yellow-100 border-2 border-yellow-400'
-                      : 'bg-gray-100 border-2 border-gray-300'
+                      ? 'bg-yellow-100 border-2 border-yellow-400 dark:bg-yellow-900/30 dark:border-yellow-600'
+                      : 'bg-gray-100 border-2 border-gray-300 dark:bg-gray-800 dark:border-gray-600'
                   }`}
                 >
-                  <div className="text-lg font-bold">{dayNum}</div>
-                  <div className="text-xs mt-1">
+                  <div className="text-lg font-bold dark:text-gray-100">{dayNum}</div>
+                  <div className="text-xs mt-1 dark:text-gray-300">
                     {day.completed}/{day.total}
                   </div>
                 </div>
@@ -132,9 +132,9 @@ Keep building those healthy habits! 💪
       </div>
 
       {/* Shareable Recap Card */}
-      <div className="card p-6 bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200">
-        <h2 className="text-lg font-semibold mb-4">📊 Shareable Recap</h2>
-        <pre className="whitespace-pre-wrap text-sm text-gray-800 mb-4 font-sans">
+      <div className="card p-6 bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200 dark:from-blue-900/20 dark:to-purple-900/20 dark:border-blue-800">
+        <h2 className="text-lg font-semibold mb-4 dark:text-gray-100">📊 Shareable Recap</h2>
+        <pre className="whitespace-pre-wrap text-sm text-gray-800 dark:text-gray-200 mb-4 font-sans">
           {generateRecapText()}
         </pre>
         <button onClick={handleCopy} className="btn btn-primary w-full">
@@ -144,35 +144,35 @@ Keep building those healthy habits! 💪
 
       {/* Insights */}
       <div className="card p-6">
-        <h2 className="text-lg font-semibold mb-4">💡 Insights</h2>
-        <ul className="space-y-2 text-sm text-gray-700">
+        <h2 className="text-lg font-semibold mb-4 dark:text-gray-100">💡 Insights</h2>
+        <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
           {overallRate >= 80 && (
             <li className="flex items-start gap-2">
-              <span className="text-green-500">✓</span>
+              <span className="text-green-500 dark:text-green-400">✓</span>
               <span>Excellent consistency! You&apos;re maintaining a strong routine.</span>
             </li>
           )}
           {overallRate < 50 && (
             <li className="flex items-start gap-2">
-              <span className="text-yellow-500">○</span>
+              <span className="text-yellow-500 dark:text-yellow-400">○</span>
               <span>There&apos;s room for improvement. Try starting with just 1-2 habits.</span>
             </li>
           )}
           {onTrackDays >= 5 && (
             <li className="flex items-start gap-2">
-              <span className="text-green-500">✓</span>
+              <span className="text-green-500 dark:text-green-400">✓</span>
               <span>You hit your target on {onTrackDays} out of {totalDays} days. Great work!</span>
             </li>
           )}
           {streakStats.currentStreak === 0 && last7Days.some((d) => d.completed > 0) && (
             <li className="flex items-start gap-2">
-              <span className="text-blue-500">→</span>
+              <span className="text-blue-500 dark:text-blue-400">→</span>
               <span>You&apos;re making progress! Keep going to build a streak.</span>
             </li>
           )}
           {streakStats.currentStreak > 0 && (
             <li className="flex items-start gap-2">
-              <span className="text-orange-500">🔥</span>
+              <span className="text-orange-500 dark:text-orange-400">🔥</span>
               <span>
                 {streakStats.currentStreak === streakStats.bestStreak
                   ? "You're on your best streak ever! Don't break it now!"
