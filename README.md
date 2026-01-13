@@ -35,6 +35,29 @@ A local-first, privacy-focused habit tracker designed specifically for new paren
 - Customize "on-track" threshold
 - Privacy-first: all data stays on your device
 
+## 🎨 UI Refresh (v0.2)
+
+We've completely overhauled the user interface with Fortune-500 quality design while maintaining the app's simplicity and local-first principles:
+
+### What's New
+- **Design System**: Implemented comprehensive design tokens for consistent spacing, colors, and typography
+- **Component Library**: Built reusable UI components (Button, Card, Input, Badge, Toast) for maintainability
+- **Mobile-First Navigation**: Responsive hamburger menu for small screens with sticky header and backdrop blur
+- **Enhanced Empty States**: Friendly, actionable messages with clear CTAs instead of generic text
+- **Toast Notifications**: Real-time feedback when completing habits or performing actions
+- **Improved Visual Hierarchy**: Better spacing, modern card designs with subtle shadows and borders
+- **Accessibility**: Added ARIA labels, keyboard navigation, and proper focus states
+- **Progressive Enhancement**: Gradient progress bars, hover animations, and smooth transitions
+
+### Key Improvements
+1. **Today Page**: Elevated cards with better spacing, larger checkboxes, enhanced progress visualization
+2. **Navigation**: Sticky header with logo, tagline, and responsive mobile menu
+3. **Empty States**: Engaging illustrations and actionable CTAs instead of plain text
+4. **Form Inputs**: Consistent styling with validation feedback and helper text
+5. **Dark Mode**: Comprehensive dark mode support maintained across all new components
+
+All improvements maintain zero external dependencies (pure Tailwind CSS) and pass production builds.
+
 ## 🔒 Privacy
 
 **100% Local-First.** All your data is stored in your browser's local storage. Nothing is sent to any server. Your habits and progress are completely private and under your control.
